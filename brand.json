@@ -1,0 +1,22 @@
+{
+  "nama_bisnis": "Promosikita",
+  "deskripsi": "Jasa pembuatan website untuk UMKM di Indonesia",
+  "bahasa": "Indonesia",
+  "gaya": "santai, ramah, kalimat pendek, mudah dipahami pemilik usaha kecil",
+  "panjang_maks_karakter": 500,
+  "jenis_konten": [
+    "tips_digital_marketing",
+    "sejarah_digital",
+    "tips_digital_marketing",
+    "mitos_vs_fakta"
+  ],
+"arahan_topik_sejarah": "Bebas memilih topik sejarah teknologi digital yang relevan untuk pemilik UMKM (komputer, internet, web, media sosial, e-commerce, pembayaran digital, ponsel, dan lainnya). Pilih topik yang belum ada di daftar riwayat.",
+  "ajakan": "Mau punya website untuk usahamu? Cek link di bio profil kami.",
+  "hashtag": ["#websiteumkm", "#digitalmarketing", "#umkmdigital", "#sejarahteknologi"],
+  "aturan_tahun": "Setiap kali menyebut tahun, awali dengan 'sekitar' atau 'kira-kira' (misalnya 'sekitar tahun 1990-an' atau 'sekitar awal 1970-an'). Lebih baik sebut dekade daripada tahun persis. Jangan menyebut tanggal atau bulan.",
+  "hindari": [
+    "menyebut nama orang atau perusahaan jika tidak yakin; pakai 'salah satu yang paling awal'",
+    "menyebut sesuatu 'yang pertama' tanpa catatan kalau klaimnya diperdebatkan",
+    "klaim berlebihan, harga, atau janji hasil pasti"
+  ]
+}
