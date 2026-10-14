@@ -39,6 +39,7 @@ function buatPrompt(brand, jenis, riwayat) {
     `Aturan tahun: ${brand.aturan_tahun}`,
     `Hindari: ${brand.hindari.join('; ')}.`,
     'Jangan menulis hashtag, ajakan penutup, atau kata "GAMBAR:" di dalam caption. Emoji boleh, paling banyak dua.',
+    'Caption harus utuh dan selesai di akhir kalimat. Jangan memakai daftar bernomor; gunakan paragraf pendek atau poin dengan tanda •.',
     terpakai.length
       ? `Topik yang SUDAH dipakai, jangan diulang atau dibuat mirip: ${terpakai.join(' | ')}.`
       : '',
@@ -74,21 +75,6 @@ async function tanyaGemini(prompt) {
 
 const bersih = (t) => String(t || '').replace(/GAMBAR:/gi, 'Gambar').trim();
 
-function rapikan(caption, maks) {
-  let t = bersih(caption);
-  if (t.length > maks) {
-    const potong = t.slice(0, maks);
-    const akhir = Math.max(
-      potong.lastIndexOf('. '),
-      potong.lastIndexOf('.\n'),
-      potong.lastIndexOf('!'),
-      potong.lastIndexOf('?')
-    );
-    t = (akhir > maks * 0.5 ? potong.slice(0, akhir + 1) : potong).trim();
-  }
-  return t;
-}
-
 async function kirimTelegram(teks) {
   const res = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
     method: 'POST',
@@ -114,7 +100,18 @@ async function kirimTelegram(teks) {
   );
   if (!hasil.topik || !hasil.caption) throw new Error('Balasan Gemini tidak lengkap.');
 
-  const caption = rapikan(hasil.caption, brand.panjang_maks_karakter);
+let caption = bersih(hasil.caption);
+if (caption.length > brand.panjang_maks_karakter) {
+  const ulang = await tanyaGemini(
+    `Persingkat caption berikut menjadi maksimal ${brand.panjang_maks_karakter} karakter tanpa memotong kalimat dan tanpa daftar bernomor. Pertahankan makna dan gaya bahasanya. Balas HANYA dengan JSON: {"caption": "..."}\n\n${caption}`
+  );
+  try {
+    const pendek = bersih(JSON.parse(ulang.replace(/```json|```/g, '').trim()).caption);
+    if (pendek && pendek.length < caption.length) caption = pendek;
+  } catch (e) {
+    // kalau gagal diparse, pakai caption asli
+  }
+}
   const ide = bersih(hasil.ide_visual) || 'Belum ada ide visual dari Gemini.';
 
   const teks = [
